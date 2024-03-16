@@ -98,7 +98,19 @@ window,addEventListener('load', function(){
 
     }
     class UI {
-
+        constructor(game){
+            this.game = game;
+            this.fontSize = 25;
+            this.fontFamily = 'Helvetica';
+            this.color = 'yellow';
+        }
+        draw(context){
+            context.fillStyle = this.color;
+            for (let index = 0; index < this.game.ammo; index++) {
+                context.fillRect(20 + 55 * index, 20, 3, 10);
+                
+            }
+        }
     }
     class Game {
         constructor(width, height){
@@ -106,6 +118,7 @@ window,addEventListener('load', function(){
             this.height = height;
             this.player = new Player(this);
             this.inputHandler = new InputHandler(this);
+            this.ui = new UI(this);
             this.keys = [];
             this.ammo = 20;
             this.maxAmmo = 50;
@@ -119,7 +132,6 @@ window,addEventListener('load', function(){
                 if (this.ammo < this.maxAmmo) {
                     this.ammo++;
                     this.ammoTimer = 0;
-                    console.log(this.ammo);
                 }
             } else {
                 this.ammoTimer += deltaTime;
@@ -127,6 +139,7 @@ window,addEventListener('load', function(){
         }
         draw(context){
             this.player.draw(context);
+            this.ui.draw(context);
         }
     }
 
