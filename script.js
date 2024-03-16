@@ -108,9 +108,22 @@ window,addEventListener('load', function(){
             this.inputHandler = new InputHandler(this);
             this.keys = [];
             this.ammo = 20;
+            this.maxAmmo = 50;
+            this.ammoTimer = 0;
+            this.intervalAmmo = 500;
         }
-        update(){
+        update(deltaTime){
             this.player.update();
+
+            if (this.ammoTimer > this.intervalAmmo){
+                if (this.ammo < this.maxAmmo) {
+                    this.ammo++;
+                    this.ammoTimer = 0;
+                    console.log(this.ammo);
+                }
+            } else {
+                this.ammoTimer += deltaTime;
+            }
         }
         draw(context){
             this.player.draw(context);
@@ -118,12 +131,16 @@ window,addEventListener('load', function(){
     }
 
     const game = new Game(canvas.width, canvas.height);
+
+    let lastTime = 0;
     //animation loop
-    function animate(){
+    function animate(timeStamp){
+        const deltaTime = timeStamp - lastTime;
+        lastTime = timeStamp; 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        game.update();
+        game.update(deltaTime);
         game.draw(ctx);
         requestAnimationFrame(animate);
     }
-    animate();
+    animate(0);
 });
