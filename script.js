@@ -113,6 +113,7 @@ window,addEventListener('load', function(){
             this.width = 228 * 0.2;
             this.height = 169 * 0.2;
             this.y = Math.random() * (this.game.height * 0.9 - this.height);
+            this.lives = 5;
         }
     }
 
@@ -174,6 +175,16 @@ window,addEventListener('load', function(){
                 if (this.checkCollision(this.player, enemy)){
                     enemy.markedForDeletion = true;
                 }
+                this.player.projectiles.forEach(projectile => {
+                    if (this.checkCollision(projectile, enemy)){
+                        projectile.markedForDeletion = true;
+                        enemy.lives--;
+
+                        if (enemy.lives < 0){
+                            enemy.markedForDeletion = true;
+                        }
+                    }
+                });
             });
             this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
             if (this.enemyTimer > this.enemyInterval && !this.gameOver){
