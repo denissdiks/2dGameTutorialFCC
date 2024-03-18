@@ -104,6 +104,9 @@ window,addEventListener('load', function(){
         draw(context){
             context.fillStyle = 'red';
             context.fillRect(this.x, this.y, this.width, this.height);
+            context.fillStyle = 'black';
+            context.font = '20px Helvetica';
+            context.fillText(this.lives, this.x, this.y);
         }
     }
 
@@ -114,6 +117,7 @@ window,addEventListener('load', function(){
             this.height = 169 * 0.2;
             this.y = Math.random() * (this.game.height * 0.9 - this.height);
             this.lives = 5;
+            this.score = this.lives;
         }
     }
 
@@ -146,6 +150,7 @@ window,addEventListener('load', function(){
             this.inputHandler = new InputHandler(this);
             this.ui = new UI(this);
             this.keys = [];
+            this.score = 0;
             //enemies
             this.enemies = [];
             this.enemyTimer = 0;
@@ -180,8 +185,9 @@ window,addEventListener('load', function(){
                         projectile.markedForDeletion = true;
                         enemy.lives--;
 
-                        if (enemy.lives < 0){
+                        if (enemy.lives <= 0){
                             enemy.markedForDeletion = true;
+                            this.score += enemy.score;
                         }
                     }
                 });
