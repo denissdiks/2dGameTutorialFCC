@@ -1,8 +1,8 @@
-window,addEventListener('load', function(){
+window.addEventListener('load', function(){
     //canvas setup
     const canvas = document.getElementById('canvas1');
     const ctx = canvas.getContext('2d');
-    canvas.width = 1500;
+    canvas.width = 500;
     canvas.height = 500;
 
     class InputHandler {
@@ -132,14 +132,22 @@ window,addEventListener('load', function(){
             this.game = game;
             this.fontSize = 25;
             this.fontFamily = 'Helvetica';
-            this.color = 'yellow';
+            this.color = 'white';
         }
         draw(context){
+            context.save();
             context.fillStyle = this.color;
+            context.shadowOffsetX = 2;
+            context.shadowOffsetY = 2;
+            context.shadowColor = 'black';
+            context.font = this.fontSize + 'px ' + this.fontFamily;
+            context.fillText('Score: ' + this.game.score, 20, 40);
+
             for (let index = 0; index < this.game.ammo; index++) {
-                context.fillRect(20 + 5 * index, 20, 3, 10);
+                context.fillRect(20 + 5 * index, 50, 3, 10);
                 
             }
+            context.restore();
         }
     }
     class Game {
@@ -161,6 +169,8 @@ window,addEventListener('load', function(){
             this.ammoTimer = 0;
             this.intervalAmmo = 500;
 
+            this.score = 0;
+            this.winningScore = 10;
             this.gameOver = false;
         }
         update(deltaTime){
@@ -188,6 +198,9 @@ window,addEventListener('load', function(){
                         if (enemy.lives <= 0){
                             enemy.markedForDeletion = true;
                             this.score += enemy.score;
+                            if (this.score >= this.winningScore){
+                                this.gameOver = true;
+                            }
                         }
                     }
                 });
