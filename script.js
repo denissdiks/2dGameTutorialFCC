@@ -141,12 +141,16 @@ window.addEventListener('load', function(){
             context.shadowOffsetY = 2;
             context.shadowColor = 'black';
             context.font = this.fontSize + 'px ' + this.fontFamily;
+            //score
             context.fillText('Score: ' + this.game.score, 20, 40);
-
+            //ammo
             for (let index = 0; index < this.game.ammo; index++) {
                 context.fillRect(20 + 5 * index, 50, 3, 10);
                 
             }
+            //timer
+            let formattedTime = (this.game.gameTime * 0.001).toFixed(1);
+            context.fillText('Timer: ' + formattedTime, 20, 85);
 
             if(this.game.gameOver){
                 context.textAlign = 'center';
@@ -186,12 +190,21 @@ window.addEventListener('load', function(){
             this.maxAmmo = 50;
             this.ammoTimer = 0;
             this.intervalAmmo = 500;
-
+            //score
             this.score = 0;
             this.winningScore = 10;
             this.gameOver = false;
+            //time
+            this.gameTime = 0;
+            this.timeLimit = 5000;
         }
         update(deltaTime){
+            if (!this.gameOver){
+                this.gameTime += deltaTime;
+            }
+            if (this.gameTime > this.timeLimit){
+                this.gameOver = true;
+            }
             this.player.update();
 
             if (this.ammoTimer > this.intervalAmmo){
