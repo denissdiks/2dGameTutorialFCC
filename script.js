@@ -56,6 +56,7 @@ window.addEventListener('load', function(){
             this.y = 100;
             this.frameX = 0;
             this.frameY = 0;
+            this.maxFrame = 37;
             this.speedY = 0;
             this.maxSpeed = 2;
             this.projectiles = [];
@@ -69,6 +70,13 @@ window.addEventListener('load', function(){
             } else this.speedY = 0;
 
             this.y += this.speedY;
+
+            //handles animation
+            if (this.frameX < this.maxFrame){
+                this.frameX++;
+            } else {
+                this.frameX = 0;
+            }
 
             //handle projectiles
             this.projectiles.forEach(projectile => {
